@@ -2,8 +2,8 @@
 //  UnderLineView.swift
 //  FontStyle
 //
-//  Created by MyGlamm on 8/30/19.
-//  Copyright © 2019 MyGlamm. All rights reserved.
+//  Created by Vikas Salian on 8/30/19.
+//  Copyright © 2019 MB. All rights reserved.
 //
 
 import UIKit
@@ -142,6 +142,8 @@ class UnderLineView : UIView{
      */
     private func animateComingOfUnderLine(animatingView : [UIView],colorOfUnderLine : UIColor = .red,index : Int = 0){
         
+        if !isRemoving {
+        
         addSubview(animatingView[index])
         
 
@@ -185,7 +187,7 @@ class UnderLineView : UIView{
         
         CATransaction.commit()
         
-        
+        }
     }
     
 
@@ -194,8 +196,14 @@ class UnderLineView : UIView{
      This method animate the removal of underline ,by first removing previously added layer then adding the animating layer and then finally removing that view
 
      */
+    
+    var isRemoving : Bool = false
     func removeunderLineViews(){
-        animateRemovingOfUnderLine(index: (underline_Views.count - 1) )
+        
+        if !isRemoving{
+            isRemoving = true
+            animateRemovingOfUnderLine(index: (underline_Views.count - 1) )
+        }
     }
     
     
@@ -207,6 +215,7 @@ class UnderLineView : UIView{
      */
     private func animateRemovingOfUnderLine(index : Int = 0){
         
+ 
         if !underline_Views.isEmpty {
             
             CATransaction.begin()
@@ -239,7 +248,12 @@ class UnderLineView : UIView{
                 if (index - 1) >= 0{
                     
                     self?.animateRemovingOfUnderLine(index: (index - 1))
+                    
+                    if (index - 1 ) == 0{
+                        self?.isRemoving = false
+                    }
                 }
+                
             }
             
             gradient.add(anim, forKey: "underLineRemoval")
@@ -249,6 +263,7 @@ class UnderLineView : UIView{
             CATransaction.commit()
             
         }
+        
         
     }
     
