@@ -21,19 +21,27 @@ class ViewController: UIViewController {
 
         
         
-        underLineView.setupTextForLabel(withText: "Horizontal Video Slider Horizontal Video S Horizontal Video Slider Horizontal Video S", withFont: UIFont(name: "D-DIN", size: 24)!, withColor: .blue)
+        underLineView.setupTextForLabel(withText: "Horizontal Video Slider Horizontal Video S Horizontal Video Slider Horizontal Video S  Horizontal Video Slider Horizontal Video S", withFont: UIFont(name: "D-DIN", size: 32)!, withColor: .blue,withAlignment: .natural)
  
        
 
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        //underLineView.createUnderLineViews()
+          print( "underLineView.frame ", underLineView.frame)
+    }
 
-    
 
     @IBAction func buttonTapped(_ sender: UIButton) {
         underLineView.createUnderLineViews()
+       
     }
     
 
+    @IBAction func remove(_ sender: UIButton) {
+        
+        underLineView.removeunderLineViews()
+    }
 }
 

@@ -23,18 +23,27 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="US9-cc-d5q">
-                                <rect key="frame" x="184" y="782" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="158" y="782" width="98" height="30"/>
+                                <state key="normal" title="Add Underline"/>
                                 <connections>
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wKi-Y0-8Zr"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wa6-nk-vYg">
+                                <rect key="frame" x="144.5" y="685" width="125" height="30"/>
+                                <state key="normal" title="Remove Underline"/>
+                                <connections>
+                                    <action selector="remove:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZLE-2p-N5E"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="3Lm-3c-iY6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="5kr-21-BAZ"/>
+                            <constraint firstItem="Wa6-nk-vYg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Fgf-68-538"/>
                             <constraint firstItem="3Lm-3c-iY6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="74" id="IE2-H2-WWu"/>
                             <constraint firstItem="US9-cc-d5q" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="e2y-rm-hqi"/>
+                            <constraint firstItem="US9-cc-d5q" firstAttribute="top" secondItem="Wa6-nk-vYg" secondAttribute="bottom" constant="67" id="gLN-8j-eIb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="US9-cc-d5q" secondAttribute="bottom" constant="50" id="nlS-Mj-p0j"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3Lm-3c-iY6" secondAttribute="trailing" constant="100" id="ptj-i1-pSa"/>
                         </constraints>
