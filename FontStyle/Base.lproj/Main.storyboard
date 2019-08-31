@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,48 +18,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iqT-Dn-4Wf">
-                                <rect key="frame" x="30" y="64" width="354" height="92.5"/>
-                                <string key="text">This is Line 1 
-This is Line 2
-This is Line 3 asndjasnjfaskf kjh nmbmbmbbmbmnbmbmbmbmbmbmn
-This is Line 4 </string>
-                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oOq-4L-ske">
-                                <rect key="frame" x="74" y="248" width="289.5" height="269.5"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="asdjewqhfwhqekjfhqjfhjkqhfkjqwhfjkqhwjkfhqwkjfhqjwkhfjqwhfkjqwhkfjhqwjkfhqjkfhjkqhfkq" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHj-J9-lfl">
-                                        <rect key="frame" x="99" y="54" width="91.5" height="162.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.78057898319999997" green="0.02354164009" blue="0.96167116119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstItem="bHj-J9-lfl" firstAttribute="leading" secondItem="oOq-4L-ske" secondAttribute="leading" constant="99" id="EVO-h0-pzZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="bHj-J9-lfl" secondAttribute="trailing" constant="99" id="baT-cI-fuW"/>
-                                    <constraint firstAttribute="bottom" secondItem="bHj-J9-lfl" secondAttribute="bottom" constant="53" id="ffo-LI-tez"/>
-                                    <constraint firstItem="bHj-J9-lfl" firstAttribute="top" secondItem="oOq-4L-ske" secondAttribute="top" constant="54" id="o1f-sA-cJ7"/>
-                                </constraints>
+                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="3Lm-3c-iY6" customClass="UnderLineView" customModule="FontStyle" customModuleProvider="target">
+                                <rect key="frame" x="74" y="54" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="US9-cc-d5q">
+                                <rect key="frame" x="184" y="782" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wKi-Y0-8Zr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="oOq-4L-ske" secondAttribute="trailing" constant="50" id="5gC-4H-xws"/>
-                            <constraint firstItem="iqT-Dn-4Wf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="6gI-fc-mrH"/>
-                            <constraint firstItem="oOq-4L-ske" firstAttribute="top" secondItem="iqT-Dn-4Wf" secondAttribute="bottom" constant="91.5" id="NNk-NO-zKc"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iqT-Dn-4Wf" secondAttribute="trailing" constant="30" id="ZCe-gN-y0N"/>
-                            <constraint firstItem="oOq-4L-ske" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="74" id="dtf-QA-LCY"/>
-                            <constraint firstItem="iqT-Dn-4Wf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="eiy-vn-7x7"/>
+                            <constraint firstItem="3Lm-3c-iY6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="5kr-21-BAZ"/>
+                            <constraint firstItem="3Lm-3c-iY6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="74" id="IE2-H2-WWu"/>
+                            <constraint firstItem="US9-cc-d5q" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="e2y-rm-hqi"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="US9-cc-d5q" secondAttribute="bottom" constant="50" id="nlS-Mj-p0j"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3Lm-3c-iY6" secondAttribute="trailing" constant="100" id="ptj-i1-pSa"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="label1" destination="iqT-Dn-4Wf" id="kaQ-74-PKd"/>
+                        <outlet property="underLineView" destination="3Lm-3c-iY6" id="s6H-Ho-wER"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
