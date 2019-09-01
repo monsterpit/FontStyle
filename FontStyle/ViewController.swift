@@ -21,7 +21,7 @@ class ViewController: UIViewController {
 
         
         
-        underLineView.setupTextForLabel(withText: "Horizontal Video Slider Horizontal Video S Horizontal Video Slider Horizontal Video S  Horizontal Video Slider Horizontal Video S", withFont: UIFont(name: "D-DIN", size: 32)!, withColor: .blue,withAlignment: .natural)
+        underLineView.setupTextForLabel(withText: "Horizontal Video Slider Horizontal Video Slider Horizontal Video Slider  ", withFont: UIFont(name: "D-DIN", size: 32)!, withColor: .blue,withAlignment: .natural)
  
        
 

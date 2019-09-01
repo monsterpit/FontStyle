@@ -21,6 +21,14 @@ class UnderLineView : UIView{
     
     private var animationDuration : Double = 0.5
     
+    private  var isRemoving : Bool = false
+    
+    private var isAdding : Bool = false
+    
+    private var displayingUnderLineViews : [UIView] = []
+    
+    private var currentIndex : Int = 0
+    
     override init(frame: CGRect) {
         super.init(frame: CGRect.zero)
         setupLabel()
@@ -89,36 +97,172 @@ class UnderLineView : UIView{
      */
     func createUnderLineViews(withColor color : UIColor = #colorLiteral(red: 0.9891870618, green: 0.7692108154, blue: 0.7603701353, alpha: 1) ,withHeight height : CGFloat = 0,withDuration duration : Double = 0.5){
         
-        if underline_Views.isEmpty {
-     
-        animationDuration = duration
-            
-        underLineColor = color
+        print("isRemoving \(isRemoving)")
+        print("isAdding \(isAdding)")
         
+        
+        if underline_Views.isEmpty {
+            
+            animationDuration = duration
+            
+            underLineColor = color
+
             createUnderLineViews(withHeight : height)
 
-            animateComingOfUnderLine(animatingView : underline_Views,colorOfUnderLine : underLineColor)
-            
         }
         
-        else {
+        if !isRemoving{
             
-            if isRemoving{
+
+            
+            
+            if displayingUnderLineViews.isEmpty{
+    
+                if !isAdding{
+                    isAdding = true
+                animateComingOfUnderLine()
+
+                }
+  
+            }
+            else {
                 
-                let currentIndex = (underline_Views.count)
+                if !isAdding{
+                    isAdding = true
+                    animateComingOfUnderLine(index: currentIndex)
+                }
                 
-                isRemoving = false
-                
-                createUnderLineViews(withHeight : height)
-                
-                animateComingOfUnderLine(animatingView : underline_Views,colorOfUnderLine : underLineColor,index: currentIndex)
             }
             
-            
         }
-    
+            //IsRemoving True handled below check
+        else{
+            
+            if displayingUnderLineViews.isEmpty{
+
+                
+                if !isAdding{
+                    isAdding = true
+                    isRemoving = true
+                    animateComingOfUnderLine()
+                }
+                else{
+                    animateComingOfUnderLine()
+                }
+                
+            }
+            else {
+                
+
+                if !isAdding{
+                    isAdding = true
+                    isRemoving = true
+                    
+                    animateComingOfUnderLine(index: currentIndex - 1)
+                }
+                
+                else{
+                  isRemoving = false
+                    isAdding = true
+                }
+                
+            }
+      
+        }
+  
     }
     
+
+    
+    /**
+     Takes array of UIView which animate from left to right (using gradient and CABasicAnimation and  CATransaction for Completion)and takes color for underline
+     
+     - Parameters:
+     - animatingView: Array of UIViews for animation
+     - colorOfUnderLine: Color of Underline
+     - index : index of view in underline_Views
+     */
+    private func animateComingOfUnderLine(index : Int = 0){
+        
+
+        
+        
+            
+            addSubview(underline_Views[index])
+            
+            
+            //label1.layer.zPosition = 1
+            
+            bringSubviewToFront(labelText)
+            
+            
+            CATransaction.begin()
+            
+            let gradient = CAGradientLayer(layer: underline_Views[index].layer)
+            let startLocations = [0, 0]
+            let endLocations = [1, 1]
+            
+            gradient.colors = [underLineColor.cgColor, UIColor.clear.cgColor]
+            gradient.frame = self.frame
+            gradient.locations = startLocations as [NSNumber]
+            gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+            gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+            gradient.frame = underline_Views[index].bounds
+            
+            underline_Views[index].layer.addSublayer(gradient)
+            
+            
+            let anim = CABasicAnimation(keyPath: "locations")
+            anim.fromValue = startLocations
+            anim.toValue = endLocations
+            anim.duration = animationDuration
+            
+            // Callback function
+            CATransaction.setCompletionBlock {  [weak self] in
+                
+                if !(self?.isRemoving ?? false){
+                    
+                    print("added underline number \(index + 1) ")
+                    print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
+                    
+                    guard let underlineView = self?.underline_Views[index] else{return}
+                    self?.displayingUnderLineViews.append(underlineView)
+                    self?.currentIndex = index
+                    
+                    if (index + 1) < (self?.underline_Views.count ?? 0){
+                        self?.animateComingOfUnderLine(index: (index + 1))
+                    }
+                    if (index ) == ((self?.underline_Views.count ?? 0) - 1){
+                        self?.isAdding = false
+                    }
+                    
+                }
+                else{
+                    
+                   
+                    
+                    print("added underline number \(index + 1) ")
+                    print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
+                    
+                    guard let underlineView = self?.underline_Views[index] else{return}
+                    self?.displayingUnderLineViews.append(underlineView)
+                    
+                     self?.currentIndex = index
+                    
+                    
+                }
+            }
+            
+            gradient.add(anim, forKey: "underLineAddition")
+            gradient.locations = endLocations as [NSNumber]
+            
+            
+            CATransaction.commit()
+            
+        
+    }
+    
+
     private func createUnderLineViews(withHeight height : CGFloat){
         
         
@@ -153,81 +297,58 @@ class UnderLineView : UIView{
         
     }
     
-    /**
-     Takes array of UIView which animate from left to right (using gradient and CABasicAnimation and  CATransaction for Completion)and takes color for underline
-     
-     - Parameters:
-     - animatingView: Array of UIViews for animation
-     - colorOfUnderLine: Color of Underline
-     - index : index of view in underline_Views
-     */
-    private func animateComingOfUnderLine(animatingView : [UIView],colorOfUnderLine : UIColor = .red,index : Int = 0){
-        
-        if !isRemoving {
-        
-        addSubview(animatingView[index])
-        
-
-        //label1.layer.zPosition = 1
-        
-        bringSubviewToFront(labelText)
-        
-        
-        CATransaction.begin()
-        
-        let gradient = CAGradientLayer(layer: animatingView[index].layer)
-        let startLocations = [0, 0]
-        let endLocations = [1, 1]
-        
-        gradient.colors = [colorOfUnderLine.cgColor, UIColor.clear.cgColor]
-        gradient.frame = self.frame
-        gradient.locations = startLocations as [NSNumber]
-        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
-        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-        gradient.frame = animatingView[index].bounds
-
-        animatingView[index].layer.addSublayer(gradient)
-        
-        
-        let anim = CABasicAnimation(keyPath: "locations")
-        anim.fromValue = startLocations
-        anim.toValue = endLocations
-        anim.duration = animationDuration
-      
-        // Callback function
-        CATransaction.setCompletionBlock {  [weak self] in
-            print("added underline number \(index + 1) ")
-            print("animatingViews \(animatingView.count)")
-            if (index + 1) < animatingView.count{
-                self?.animateComingOfUnderLine(animatingView : animatingView,colorOfUnderLine : colorOfUnderLine,index: (index + 1))
-            }
-            
-            print()
-        }
-       
-        gradient.add(anim, forKey: "underLineAddition")
-        gradient.locations = endLocations as [NSNumber]
-
-        
-        CATransaction.commit()
-        
-        }
-    }
     
-
     
     /**
      This method animate the removal of underline ,by first removing previously added layer then adding the animating layer and then finally removing that view
 
      */
     
-    var isRemoving : Bool = false
+
     func removeunderLineViews(){
         
-        if !isRemoving{
-            isRemoving = true
-            animateRemovingOfUnderLine(index: (underline_Views.count - 1) )
+//        if !isRemoving{
+//            isRemoving = true
+//
+//        }
+        
+        print("isRemoving \(isRemoving)")
+        print("isAdding \(isAdding)")
+
+        if !isAdding{
+            
+            if displayingUnderLineViews.isEmpty{
+                isRemoving = false
+                return
+            }
+            else{
+                 if !isRemoving{
+                animateRemovingOfUnderLine(index: (underline_Views.count - 1) )
+                }
+            }
+
         }
+            //isAdding handled below
+        else{
+            
+            if displayingUnderLineViews.isEmpty{
+                isRemoving = false
+                return
+            }
+            else{
+                if !isRemoving{
+                animateRemovingOfUnderLine(index: (currentIndex + 1) )
+                }
+                else{
+                    isRemoving = true
+                    isAdding = false
+                }
+                
+            }
+            
+        }
+        
+        
     }
     
     
@@ -239,37 +360,45 @@ class UnderLineView : UIView{
      */
     private func animateRemovingOfUnderLine(index : Int = 0){
         
- 
-        if !underline_Views.isEmpty {
+        isRemoving = true
+        isAdding = false
+
+        
+        CATransaction.begin()
+        
+        let gradient = CAGradientLayer(layer: underline_Views[index].layer)
+        let startLocations = [1, 1]
+        let endLocations = [0, 0]
+        
+        gradient.colors = [underLineColor.cgColor, UIColor.clear.cgColor]
+        gradient.frame = self.frame
+        gradient.locations = startLocations as [NSNumber]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        gradient.frame = underline_Views[index].bounds
+        
+        
+        _ = underline_Views[index].layer.sublayers?.popLast()
+        underline_Views[index].layer.addSublayer(gradient)
+        
+        
+        let anim = CABasicAnimation(keyPath: "locations")
+        anim.fromValue = startLocations
+        anim.toValue = endLocations
+        anim.duration = animationDuration
+        
+        // Callback function
+        CATransaction.setCompletionBlock {  [weak self] in
             
-            CATransaction.begin()
-            
-            let gradient = CAGradientLayer(layer: underline_Views[index].layer)
-            let startLocations = [1, 1]
-            let endLocations = [0, 0]
-            
-            gradient.colors = [underLineColor.cgColor, UIColor.clear.cgColor]
-            gradient.frame = self.frame
-            gradient.locations = startLocations as [NSNumber]
-            gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
-            gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-            gradient.frame = underline_Views[index].bounds
-            
-            
-            _ = underline_Views[index].layer.sublayers?.popLast()
-            underline_Views[index].layer.addSublayer(gradient)
-            
-            
-            let anim = CABasicAnimation(keyPath: "locations")
-            anim.fromValue = startLocations
-            anim.toValue = endLocations
-            anim.duration = animationDuration
-            
-            // Callback function
-            CATransaction.setCompletionBlock {  [weak self] in
+            if !(self?.isAdding ?? false){
+                
+                
+                
+                self?.currentIndex = index
                 print("removed underline number \(index + 1) ")
-                self?.underline_Views[index].removeFromSuperview()
-                self?.underline_Views.remove(at: index)
+                print("Total underline Views " , (self?.displayingUnderLineViews.count ?? 0)  )
+                self?.displayingUnderLineViews[index].removeFromSuperview()
+                self?.displayingUnderLineViews.remove(at: index)
                 if (index - 1) >= 0{
                     
                     self?.animateRemovingOfUnderLine(index: (index - 1))
@@ -280,17 +409,24 @@ class UnderLineView : UIView{
                 }
                 
             }
-            
-            gradient.add(anim, forKey: "underLineRemoval")
-            gradient.locations = endLocations as [NSNumber]
-            
-            
-            CATransaction.commit()
+            else{
+            self?.displayingUnderLineViews[index].removeFromSuperview()
+                self?.currentIndex = index
+                
+            }
             
         }
         
+        gradient.add(anim, forKey: "underLineRemoval")
+        gradient.locations = endLocations as [NSNumber]
+        
+        
+        CATransaction.commit()
         
     }
+        
+        
+    
     
     
 }
