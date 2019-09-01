@@ -268,6 +268,7 @@ class UnderLineView : UIView{
             // Callback function
             CATransaction.setCompletionBlock {  [weak self] in
                 print("removed underline number \(index + 1) ")
+                self?.underline_Views[index].removeFromSuperview()
                 self?.underline_Views.remove(at: index)
                 if (index - 1) >= 0{
                     
