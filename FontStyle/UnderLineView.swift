@@ -90,20 +90,47 @@ class UnderLineView : UIView{
     func createUnderLineViews(withColor color : UIColor = #colorLiteral(red: 0.9891870618, green: 0.7692108154, blue: 0.7603701353, alpha: 1) ,withHeight height : CGFloat = 0,withDuration duration : Double = 0.5){
         
         if underline_Views.isEmpty {
-        
-        
-        let lines = labelText.getLinesArrayOfString()
-
-        print(lines)
-
+     
         animationDuration = duration
             
         underLineColor = color
         
+            createUnderLineViews(withHeight : height)
+
+            animateComingOfUnderLine(animatingView : underline_Views,colorOfUnderLine : underLineColor)
+            
+        }
+        
+        else {
+            
+            if isRemoving{
+                
+                let currentIndex = (underline_Views.count)
+                
+                isRemoving = false
+                
+                createUnderLineViews(withHeight : height)
+                
+                animateComingOfUnderLine(animatingView : underline_Views,colorOfUnderLine : underLineColor,index: currentIndex)
+            }
+            
+            
+        }
+    
+    }
+    
+    private func createUnderLineViews(withHeight height : CGFloat){
+        
+        
+        
+        let lines = labelText.getLinesArrayOfString()
+        
+        print(lines)
+        
         for (index,line) in lines.enumerated(){
             
             let lineSize = (line as NSString).size(withAttributes: [.font: labelText.font!])
-
+            
             var underLine_View : UIView!
             
             
@@ -119,18 +146,12 @@ class UnderLineView : UIView{
                 underLine_View = UIView(frame: CGRect(x: labelText.frame.minX, y: ( ( labelText.frame.minY  + (labelText.font.lineHeight ) * CGFloat(index+1) ) - labelText.font.leading ), width: lineSize.width, height: (height != 0 ? height : (labelText.font.descender * CGFloat(1.5) ))))
             }
             
-                underline_Views.append(underLine_View)
-
+            underline_Views.append(underLine_View)
+            
             
         }
-  
-            animateComingOfUnderLine(animatingView : underline_Views,colorOfUnderLine : underLineColor)
-            
-        }
-    
+        
     }
-    
-    
     
     /**
      Takes array of UIView which animate from left to right (using gradient and CABasicAnimation and  CATransaction for Completion)and takes color for underline
@@ -176,9 +197,12 @@ class UnderLineView : UIView{
         // Callback function
         CATransaction.setCompletionBlock {  [weak self] in
             print("added underline number \(index + 1) ")
+            print("animatingViews \(animatingView.count)")
             if (index + 1) < animatingView.count{
                 self?.animateComingOfUnderLine(animatingView : animatingView,colorOfUnderLine : colorOfUnderLine,index: (index + 1))
             }
+            
+            print()
         }
        
         gradient.add(anim, forKey: "underLineAddition")
