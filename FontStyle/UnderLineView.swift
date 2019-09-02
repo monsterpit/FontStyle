@@ -111,63 +111,26 @@ class UnderLineView : UIView{
 
         }
         
-        if !isRemoving{
-            
-
-            
-            
-            if displayingUnderLineViews.isEmpty{
-    
-                if !isAdding{
-                    isAdding = true
-                animateComingOfUnderLine()
-
-                }
   
+        if isAdding{
+            return
+        }
+        else{
+//            if displayingUnderLineViews.isEmpty{
+//
+//                    isAdding = true
+//                    animateComingOfUnderLine()
+//
+//
+//            }
+              if displayingUnderLineViews.count == underline_Views.count{
+                isAdding = false
+                return
             }
             else {
-                
-                if !isAdding{
                     isAdding = true
                     animateComingOfUnderLine(index: currentIndex)
-                }
-                
             }
-            
-        }
-            //IsRemoving True handled below check
-        else{
-            
-            if displayingUnderLineViews.isEmpty{
-
-                
-                if !isAdding{
-                    isAdding = true
-                    isRemoving = true
-                    animateComingOfUnderLine()
-                }
-                else{
-                    animateComingOfUnderLine()
-                }
-                
-            }
-            else {
-                
-
-                if !isAdding{
-                    isAdding = true
-                    isRemoving = true
-                    
-                    animateComingOfUnderLine(index: currentIndex - 1)
-                }
-                
-                else{
-                  isRemoving = false
-                    isAdding = true
-                }
-                
-            }
-      
         }
   
     }
@@ -184,21 +147,24 @@ class UnderLineView : UIView{
      */
     private func animateComingOfUnderLine(index : Int = 0){
         
+        
+        
 
-        
-        
-            
-            addSubview(underline_Views[index])
-            
-            
-            //label1.layer.zPosition = 1
-            
-            bringSubviewToFront(labelText)
-            
-            
             CATransaction.begin()
-            
-            let gradient = CAGradientLayer(layer: underline_Views[index].layer)
+        
+            isRemoving = false
+        
+            displayingUnderLineViews.append(underline_Views[index])
+            addSubview(displayingUnderLineViews[index])
+        
+        
+            //label1.layer.zPosition = 1
+        
+            bringSubviewToFront(labelText)
+        
+            currentIndex = index
+        
+            let gradient = CAGradientLayer(layer: displayingUnderLineViews[index].layer)
             let startLocations = [0, 0]
             let endLocations = [1, 1]
             
@@ -207,9 +173,9 @@ class UnderLineView : UIView{
             gradient.locations = startLocations as [NSNumber]
             gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
             gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-            gradient.frame = underline_Views[index].bounds
+            gradient.frame = displayingUnderLineViews[index].bounds
             
-            underline_Views[index].layer.addSublayer(gradient)
+            displayingUnderLineViews[index].layer.addSublayer(gradient)
             
             
             let anim = CABasicAnimation(keyPath: "locations")
@@ -222,12 +188,11 @@ class UnderLineView : UIView{
                 
                 if !(self?.isRemoving ?? false){
                     
-                    print("added underline number \(index + 1) ")
+                    print("added underline number ",((self?.currentIndex  ?? 0 ) + 1))
                     print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
                     
-                    guard let underlineView = self?.underline_Views[index] else{return}
-                    self?.displayingUnderLineViews.append(underlineView)
-                    self?.currentIndex = index
+
+                    
                     
                     if (index + 1) < (self?.underline_Views.count ?? 0){
                         self?.animateComingOfUnderLine(index: (index + 1))
@@ -239,15 +204,12 @@ class UnderLineView : UIView{
                 }
                 else{
                     
-                   
+                    self?.isAdding = false
                     
-                    print("added underline number \(index + 1) ")
+                    
+                    print("added underline number ",((self?.currentIndex  ?? 0 ) + 1))
                     print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
                     
-                    guard let underlineView = self?.underline_Views[index] else{return}
-                    self?.displayingUnderLineViews.append(underlineView)
-                    
-                     self?.currentIndex = index
                     
                     
                 }
@@ -314,21 +276,10 @@ class UnderLineView : UIView{
         
         print("isRemoving \(isRemoving)")
         print("isAdding \(isAdding)")
-
-        if !isAdding{
-            
-            if displayingUnderLineViews.isEmpty{
-                isRemoving = false
-                return
-            }
-            else{
-                 if !isRemoving{
-                animateRemovingOfUnderLine(index: (underline_Views.count - 1) )
-                }
-            }
-
+        
+        if isRemoving{
+            return
         }
-            //isAdding handled below
         else{
             
             if displayingUnderLineViews.isEmpty{
@@ -336,18 +287,15 @@ class UnderLineView : UIView{
                 return
             }
             else{
-                if !isRemoving{
-                animateRemovingOfUnderLine(index: (currentIndex + 1) )
-                }
-                else{
-                    isRemoving = true
-                    isAdding = false
-                }
+                isRemoving = true
+                animateRemovingOfUnderLine(index: currentIndex )
                 
             }
             
+            
+            
         }
-        
+   
         
     }
     
@@ -360,13 +308,15 @@ class UnderLineView : UIView{
      */
     private func animateRemovingOfUnderLine(index : Int = 0){
         
-        isRemoving = true
-        isAdding = false
+
 
         
         CATransaction.begin()
         
-        let gradient = CAGradientLayer(layer: underline_Views[index].layer)
+        currentIndex = index
+        isAdding = false
+        
+        let gradient = CAGradientLayer(layer: displayingUnderLineViews[index].layer)
         let startLocations = [1, 1]
         let endLocations = [0, 0]
         
@@ -375,11 +325,11 @@ class UnderLineView : UIView{
         gradient.locations = startLocations as [NSNumber]
         gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-        gradient.frame = underline_Views[index].bounds
+        gradient.frame = displayingUnderLineViews[index].bounds
         
         
-        _ = underline_Views[index].layer.sublayers?.popLast()
-        underline_Views[index].layer.addSublayer(gradient)
+        _ = displayingUnderLineViews[index].layer.sublayers?.popLast()
+        displayingUnderLineViews[index].layer.addSublayer(gradient)
         
         
         let anim = CABasicAnimation(keyPath: "locations")
@@ -392,26 +342,33 @@ class UnderLineView : UIView{
             
             if !(self?.isAdding ?? false){
                 
-                
-                
-                self?.currentIndex = index
-                print("removed underline number \(index + 1) ")
+                print("removed underline number \(self?.currentIndex) ")
                 print("Total underline Views " , (self?.displayingUnderLineViews.count ?? 0)  )
                 self?.displayingUnderLineViews[index].removeFromSuperview()
                 self?.displayingUnderLineViews.remove(at: index)
-                if (index - 1) >= 0{
+                
+                
+                let nextIndex = (index - 1)
+                
+                if nextIndex >= 0{
                     
-                    self?.animateRemovingOfUnderLine(index: (index - 1))
-                    
-                    if (index - 1 ) == 0{
-                        self?.isRemoving = false
-                    }
+                    self?.animateRemovingOfUnderLine(index: nextIndex)
+                }
+                if nextIndex == 0{
+                    self?.isRemoving = false
                 }
                 
             }
             else{
-            self?.displayingUnderLineViews[index].removeFromSuperview()
-                self?.currentIndex = index
+                
+                self?.isRemoving = false
+                
+                self?.displayingUnderLineViews.remove(at: index)
+                self?.displayingUnderLineViews[index].removeFromSuperview()
+                
+                print("added underline number ",((self?.currentIndex  ?? 0 ) + 1))
+                print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
+               
                 
             }
             
