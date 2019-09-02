@@ -128,8 +128,11 @@ class UnderLineView : UIView{
                 return
             }
             else {
+              
                     isAdding = true
                     animateComingOfUnderLine(index: currentIndex)
+                
+
             }
         }
   
@@ -152,19 +155,41 @@ class UnderLineView : UIView{
 
             CATransaction.begin()
         
-            isRemoving = false
+       currentIndex = index
         
-            displayingUnderLineViews.append(underline_Views[index])
-            addSubview(displayingUnderLineViews[index])
+        if !isRemoving{
+            
+            
+            
+            displayingUnderLineViews = Array(underline_Views[0...currentIndex])
+         //   displayingUnderLineViews.append(underline_Views[currentIndex])
+            addSubview(displayingUnderLineViews[currentIndex])
         
         
             //label1.layer.zPosition = 1
         
             bringSubviewToFront(labelText)
+        }
+        else{
+            
+            if let _ = displayingUnderLineViews[exist : currentIndex]{
+            _ = displayingUnderLineViews[currentIndex].layer.sublayers?.popLast()
+            }
+            else{
+                displayingUnderLineViews = Array(underline_Views[0...currentIndex])
+                addSubview(displayingUnderLineViews[currentIndex])
+                
+                
+                //label1.layer.zPosition = 1
+                
+                bringSubviewToFront(labelText)
+            }
+            
+        }
+            isRemoving = false
         
-            currentIndex = index
-        
-            let gradient = CAGradientLayer(layer: displayingUnderLineViews[index].layer)
+
+            let gradient = CAGradientLayer(layer: displayingUnderLineViews[currentIndex].layer)
             let startLocations = [0, 0]
             let endLocations = [1, 1]
             
@@ -173,9 +198,9 @@ class UnderLineView : UIView{
             gradient.locations = startLocations as [NSNumber]
             gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
             gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-            gradient.frame = displayingUnderLineViews[index].bounds
+            gradient.frame = displayingUnderLineViews[currentIndex].bounds
             
-            displayingUnderLineViews[index].layer.addSublayer(gradient)
+            displayingUnderLineViews[currentIndex].layer.addSublayer(gradient)
             
             
             let anim = CABasicAnimation(keyPath: "locations")
@@ -194,10 +219,10 @@ class UnderLineView : UIView{
 
                     
                     
-                    if (index + 1) < (self?.underline_Views.count ?? 0){
-                        self?.animateComingOfUnderLine(index: (index + 1))
+                    if ( (self?.currentIndex ?? 0) + 1) < (self?.underline_Views.count ?? 0){
+                        self?.animateComingOfUnderLine(index: ((self?.currentIndex ?? 0 ) + 1))
                     }
-                    if (index ) == ((self?.underline_Views.count ?? 0) - 1){
+                    if (self?.currentIndex ) == ((self?.underline_Views.count ?? 0) - 1){
                         self?.isAdding = false
                     }
                     
@@ -342,6 +367,8 @@ class UnderLineView : UIView{
             
             if !(self?.isAdding ?? false){
                 
+                
+                
                 print("removed underline number \(self?.currentIndex) ")
                 print("Total underline Views " , (self?.displayingUnderLineViews.count ?? 0)  )
                 self?.displayingUnderLineViews[index].removeFromSuperview()
@@ -363,8 +390,8 @@ class UnderLineView : UIView{
                 
                 self?.isRemoving = false
                 
-                self?.displayingUnderLineViews.remove(at: index)
-                self?.displayingUnderLineViews[index].removeFromSuperview()
+//                self?.displayingUnderLineViews.remove(at: index)
+//                self?.displayingUnderLineViews[index].removeFromSuperview()
                 
                 print("added underline number ",((self?.currentIndex  ?? 0 ) + 1))
                 print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
