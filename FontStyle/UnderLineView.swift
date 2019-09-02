@@ -371,8 +371,14 @@ class UnderLineView : UIView{
                 
                 print("removed underline number \(self?.currentIndex) ")
                 print("Total underline Views " , (self?.displayingUnderLineViews.count ?? 0)  )
-                self?.displayingUnderLineViews[index].removeFromSuperview()
-                self?.displayingUnderLineViews.remove(at: index)
+                
+                
+                if let _ = self?.displayingUnderLineViews[exist: index] {
+                    self?.displayingUnderLineViews[index].removeFromSuperview()
+                    self?.displayingUnderLineViews.remove(at: index)
+                }
+                
+
                 
                 
                 let nextIndex = (index - 1)
