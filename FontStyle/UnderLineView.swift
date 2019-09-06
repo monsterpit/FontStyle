@@ -8,14 +8,14 @@
 
 import UIKit
 
-class UnderLineView : UIView{
+class UnderLineView : UILabel{
     
     //label which has whole text
     private var labelText = UILabel()
     
     //Keeps track of all UnderLine Views
     private var underline_Views : [UIView] = []
-
+    
     //Variable that keeps track of underline color set during " createUnderLineViews "
     private var underLineColor : UIColor = #colorLiteral(red: 0.9891870618, green: 0.7692108154, blue: 0.7603701353, alpha: 1)
     
@@ -29,6 +29,8 @@ class UnderLineView : UIView{
     
     private var currentIndex : Int = 0
     
+    private var isAnimating : Bool = false
+    
     override init(frame: CGRect) {
         super.init(frame: CGRect.zero)
         setupLabel()
@@ -38,25 +40,26 @@ class UnderLineView : UIView{
         super.init(coder: aDecoder)
         setupLabel()
     }
-
+    
     //Used to setup  constraints label in our custom UnderLineView view (which contains 1 label and array of underlineView)
     private func setupLabel(){
-
+        
         
         labelText.numberOfLines = 0
-
+        
         addSubview(labelText)
         
+        //labelText.frame = CGRect(x: 0, y: 0, width: 1000, height: 1000)
         
         labelText.translatesAutoresizingMaskIntoConstraints = false
         
-        labelText.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
+        labelText.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
         
-        labelText.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
+        labelText.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
         
-        labelText.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        labelText.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         
-        labelText.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+        labelText.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
         
         
         
@@ -74,16 +77,24 @@ class UnderLineView : UIView{
      
      
      */
-    func setupTextForLabel(withText text : String? = "",withFont font : UIFont = UIFont.systemFont(ofSize: 15),withColor color : UIColor = .black,withAlignment alignment : NSTextAlignment? = .natural){
+    func setupTextForLabel(withText text : String? = "",withFont font : UIFont = UIFont.systemFont(ofSize: 15),withColor color : UIColor = .black,withAlignment alignment : NSTextAlignment? = .natural,withFontSize fontSize : CGFloat = 16){
         
-        labelText.font = font
+        if fontSize == 16{
+            labelText.font = font
+            
+        }
+        else{
+            labelText.font = UIFont.init(name: "D-DIN-Bold", size: fontSize)  ?? UIFont.systemFont(ofSize: fontSize)
+        }
+        
         labelText.text = text
         labelText.textColor = color
         labelText.textAlignment = alignment!
         
-    
+        
     }
-
+    
+    
     
     
     
@@ -93,52 +104,53 @@ class UnderLineView : UIView{
      - Parameters:
      - withColor: The color of the underline default colorr is pink
      - withHeight: The height of the underline default height is labelText.font.descender
-
+     
      */
-    func createUnderLineViews(withColor color : UIColor = #colorLiteral(red: 0.9891870618, green: 0.7692108154, blue: 0.7603701353, alpha: 1) ,withHeight height : CGFloat = 0,withDuration duration : Double = 0.5){
+    func createUnderLineViews(withColor color : UIColor = #colorLiteral(red: 0.9891870618, green: 0.7692108154, blue: 0.7603701353, alpha: 1) ,withHeight height : CGFloat = 0,withDuration duration : Double = 0.5,animation : Bool = false){
         
         print("isRemoving \(isRemoving)")
         print("isAdding \(isAdding)")
         
+        isAnimating = animation
         
         if underline_Views.isEmpty {
             
             animationDuration = duration
             
             underLineColor = color
-
+            
             createUnderLineViews(withHeight : height)
-
+            
         }
         
-  
+        
         if isAdding{
             return
         }
         else{
-//            if displayingUnderLineViews.isEmpty{
-//
-//                    isAdding = true
-//                    animateComingOfUnderLine()
-//
-//
-//            }
-              if displayingUnderLineViews.count == underline_Views.count{
+            //            if displayingUnderLineViews.isEmpty{
+            //
+            //                    isAdding = true
+            //                    animateComingOfUnderLine()
+            //
+            //
+            //            }
+            if displayingUnderLineViews.count == underline_Views.count{
                 isAdding = false
                 return
             }
             else {
-              
-                    isAdding = true
-                    animateComingOfUnderLine(index: currentIndex)
                 
-
+                isAdding = true
+                animateComingOfUnderLine(index: currentIndex)
+                
+                
             }
         }
-  
+        
     }
     
-
+    
     
     /**
      Takes array of UIView which animate from left to right (using gradient and CABasicAnimation and  CATransaction for Completion)and takes color for underline
@@ -152,31 +164,18 @@ class UnderLineView : UIView{
         
         
         
-
+        if isAnimating{
+            
             CATransaction.begin()
-        
-       currentIndex = index
-        
-        if !isRemoving{
             
+            currentIndex = index
             
-            
-            displayingUnderLineViews = Array(underline_Views[0...currentIndex])
-         //   displayingUnderLineViews.append(underline_Views[currentIndex])
-            addSubview(displayingUnderLineViews[currentIndex])
-        
-        
-            //label1.layer.zPosition = 1
-        
-            bringSubviewToFront(labelText)
-        }
-        else{
-            
-            if let _ = displayingUnderLineViews[exist : currentIndex]{
-            _ = displayingUnderLineViews[currentIndex].layer.sublayers?.popLast()
-            }
-            else{
+            if !isRemoving{
+                
+                
+                
                 displayingUnderLineViews = Array(underline_Views[0...currentIndex])
+                //   displayingUnderLineViews.append(underline_Views[currentIndex])
                 addSubview(displayingUnderLineViews[currentIndex])
                 
                 
@@ -184,11 +183,25 @@ class UnderLineView : UIView{
                 
                 bringSubviewToFront(labelText)
             }
-            
-        }
+            else{
+                
+                if let _ = displayingUnderLineViews[exist : currentIndex]{
+                    _ = displayingUnderLineViews[currentIndex].layer.sublayers?.popLast()
+                }
+                else{
+                    displayingUnderLineViews = Array(underline_Views[0...currentIndex])
+                    addSubview(displayingUnderLineViews[currentIndex])
+                    
+                    
+                    //label1.layer.zPosition = 1
+                    
+                    bringSubviewToFront(labelText)
+                }
+                
+            }
             isRemoving = false
-        
-
+            
+            
             let gradient = CAGradientLayer(layer: displayingUnderLineViews[currentIndex].layer)
             let startLocations = [0, 0]
             let endLocations = [1, 1]
@@ -216,7 +229,7 @@ class UnderLineView : UIView{
                     print("added underline number ",((self?.currentIndex  ?? 0 ) + 1))
                     print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
                     
-
+                    
                     
                     
                     if ( (self?.currentIndex ?? 0) + 1) < (self?.underline_Views.count ?? 0){
@@ -246,10 +259,38 @@ class UnderLineView : UIView{
             
             CATransaction.commit()
             
+            
+        }
+            
+        else
+            
+        {
+            for pos in (index...(underline_Views.count-1))
+            {
+                currentIndex = pos
+                
+                
+                displayingUnderLineViews = Array(underline_Views[0...currentIndex])
+                displayingUnderLineViews[currentIndex].backgroundColor = underLineColor
+                
+                //   displayingUnderLineViews.append(underline_Views[currentIndex])
+                addSubview(displayingUnderLineViews[currentIndex])
+                
+                
+                //label1.layer.zPosition = 1
+                
+                bringSubviewToFront(labelText)
+            }
+            
+        }
+        
+        
+        
+        
         
     }
     
-
+    
     private func createUnderLineViews(withHeight height : CGFloat){
         
         
@@ -288,16 +329,16 @@ class UnderLineView : UIView{
     
     /**
      This method animate the removal of underline ,by first removing previously added layer then adding the animating layer and then finally removing that view
-
+     
      */
     
-
+    
     func removeunderLineViews(){
         
-//        if !isRemoving{
-//            isRemoving = true
-//
-//        }
+        //        if !isRemoving{
+        //            isRemoving = true
+        //
+        //        }
         
         print("isRemoving \(isRemoving)")
         print("isAdding \(isAdding)")
@@ -320,7 +361,7 @@ class UnderLineView : UIView{
             
             
         }
-   
+        
         
     }
     
@@ -333,8 +374,8 @@ class UnderLineView : UIView{
      */
     private func animateRemovingOfUnderLine(index : Int = 0){
         
-
-
+        
+        
         
         CATransaction.begin()
         
@@ -378,7 +419,7 @@ class UnderLineView : UIView{
                     self?.displayingUnderLineViews.remove(at: index)
                 }
                 
-
+                
                 
                 
                 let nextIndex = (index - 1)
@@ -396,12 +437,12 @@ class UnderLineView : UIView{
                 
                 self?.isRemoving = false
                 
-//                self?.displayingUnderLineViews.remove(at: index)
-//                self?.displayingUnderLineViews[index].removeFromSuperview()
+                //                self?.displayingUnderLineViews.remove(at: index)
+                //                self?.displayingUnderLineViews[index].removeFromSuperview()
                 
                 print("added underline number ",((self?.currentIndex  ?? 0 ) + 1))
                 print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
-               
+                
                 
             }
             
@@ -414,8 +455,9 @@ class UnderLineView : UIView{
         CATransaction.commit()
         
     }
-        
-        
+    
+    
+    
     
     
     

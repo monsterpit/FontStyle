@@ -34,8 +34,11 @@ class ViewController: UIViewController {
 
 
     @IBAction func buttonTapped(_ sender: UIButton) {
-        underLineView.createUnderLineViews()
-       
+        underLineView.createUnderLineViews( withDuration: 0)
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+//            cell.titleLbl.createUnderLineViews()
+//        })
     }
     
 
