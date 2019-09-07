@@ -18,10 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="240" placeholderIntrinsicHeight="128" translatesAutoresizingMaskIntoConstraints="NO" id="3Lm-3c-iY6" customClass="UnderLineView" customModule="FontStyle" customModuleProvider="target">
-                                <rect key="frame" x="74" y="54" width="240" height="128"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="US9-cc-d5q">
                                 <rect key="frame" x="158" y="782" width="98" height="30"/>
                                 <state key="normal" title="Add Underline"/>
@@ -36,21 +32,27 @@
                                     <action selector="remove:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZLE-2p-N5E"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUy-eo-W3t" customClass="UnderLineView" customModule="FontStyle" customModuleProvider="target">
+                                <rect key="frame" x="10" y="54" width="394" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="3Lm-3c-iY6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="5kr-21-BAZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yUy-eo-W3t" secondAttribute="trailing" constant="10" id="6LS-Ky-eLu"/>
+                            <constraint firstItem="yUy-eo-W3t" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="A76-HM-TSn"/>
                             <constraint firstItem="Wa6-nk-vYg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Fgf-68-538"/>
-                            <constraint firstItem="3Lm-3c-iY6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="74" id="IE2-H2-WWu"/>
                             <constraint firstItem="US9-cc-d5q" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="e2y-rm-hqi"/>
                             <constraint firstItem="US9-cc-d5q" firstAttribute="top" secondItem="Wa6-nk-vYg" secondAttribute="bottom" constant="67" id="gLN-8j-eIb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="US9-cc-d5q" secondAttribute="bottom" constant="50" id="nlS-Mj-p0j"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="3Lm-3c-iY6" secondAttribute="trailing" constant="100" id="ptj-i1-pSa"/>
+                            <constraint firstItem="yUy-eo-W3t" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="wIE-D3-X5V"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="underLineView" destination="3Lm-3c-iY6" id="s6H-Ho-wER"/>
+                        <outlet property="underLineView" destination="yUy-eo-W3t" id="rjS-pE-hIQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

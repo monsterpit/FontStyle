@@ -10,8 +10,6 @@ import UIKit
 
 class UnderLineView : UILabel{
     
-    //label which has whole text
-    private var labelText = UILabel()
     
     //Keeps track of all UnderLine Views
     private var underline_Views : [UIView] = []
@@ -31,40 +29,8 @@ class UnderLineView : UILabel{
     
     private var isAnimating : Bool = false
     
-    override init(frame: CGRect) {
-        super.init(frame: CGRect.zero)
-        setupLabel()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupLabel()
-    }
-    
-    //Used to setup  constraints label in our custom UnderLineView view (which contains 1 label and array of underlineView)
-    private func setupLabel(){
-        
-        
-        labelText.numberOfLines = 0
-        
-        addSubview(labelText)
-        
-        //labelText.frame = CGRect(x: 0, y: 0, width: 1000, height: 1000)
-        
-        labelText.translatesAutoresizingMaskIntoConstraints = false
-        
-        labelText.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
-        
-        labelText.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
-        
-        labelText.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
-        
-        labelText.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
-        
-        
-        
-    }
-    
+
+
     
     /**
      This method set's up text, font , color and aligment of text in our label of UnderLineView
@@ -79,17 +45,19 @@ class UnderLineView : UILabel{
      */
     func setupTextForLabel(withText text : String? = "",withFont font : UIFont = UIFont.systemFont(ofSize: 15),withColor color : UIColor = .black,withAlignment alignment : NSTextAlignment? = .natural,withFontSize fontSize : CGFloat = 16){
         
+        self.numberOfLines = 0
+        
         if fontSize == 16{
-            labelText.font = font
+            self.font = font
             
         }
         else{
-            labelText.font = UIFont.init(name: "D-DIN-Bold", size: fontSize)  ?? UIFont.systemFont(ofSize: fontSize)
+            self.font = UIFont.init(name: "D-DIN-Bold", size: fontSize)  ?? UIFont.systemFont(ofSize: fontSize)
         }
         
-        labelText.text = text
-        labelText.textColor = color
-        labelText.textAlignment = alignment!
+        self.text = text
+        self.textColor = color
+        self.textAlignment = alignment!
         
         
     }
@@ -98,16 +66,16 @@ class UnderLineView : UILabel{
     func setupTextForLabel(withText text : NSAttributedString? = NSAttributedString(string: ""),withFont font : UIFont = UIFont.systemFont(ofSize: 15),withColor color : UIColor = .black,withAlignment alignment : NSTextAlignment? = .natural,withFontSize fontSize : CGFloat = 16){
         
         if fontSize == 16{
-            labelText.font = font
+            self.font = font
             
         }
         else{
-            labelText.font = UIFont.init(name: "D-DIN-Bold", size: fontSize)  ?? UIFont.systemFont(ofSize: fontSize)
+            self.font = UIFont.init(name: "D-DIN-Bold", size: fontSize)  ?? UIFont.systemFont(ofSize: fontSize)
         }
         
-        labelText.attributedText = text
-        labelText.textColor = color
-        labelText.textAlignment = alignment!
+        self.attributedText = text
+        self.textColor = color
+        self.textAlignment = alignment!
         
         
     }
@@ -193,13 +161,11 @@ class UnderLineView : UILabel{
                 
                 
                 displayingUnderLineViews = Array(underline_Views[0...currentIndex])
-                //   displayingUnderLineViews.append(underline_Views[currentIndex])
-                addSubview(displayingUnderLineViews[currentIndex])
-                
-                
-                //label1.layer.zPosition = 1
-                
-                bringSubviewToFront(labelText)
+
+                superview?.addSubview(displayingUnderLineViews[currentIndex])
+
+                superview?.bringSubviewToFront(self)
+
             }
             else{
                 
@@ -208,12 +174,10 @@ class UnderLineView : UILabel{
                 }
                 else{
                     displayingUnderLineViews = Array(underline_Views[0...currentIndex])
-                    addSubview(displayingUnderLineViews[currentIndex])
-                    
-                    
-                    //label1.layer.zPosition = 1
-                    
-                    bringSubviewToFront(labelText)
+                    superview?.addSubview(displayingUnderLineViews[currentIndex])
+
+                    superview?.bringSubviewToFront(self)
+
                 }
                 
             }
@@ -291,13 +255,11 @@ class UnderLineView : UILabel{
                 displayingUnderLineViews = Array(underline_Views[0...currentIndex])
                 displayingUnderLineViews[currentIndex].backgroundColor = underLineColor
                 
-                //   displayingUnderLineViews.append(underline_Views[currentIndex])
-                addSubview(displayingUnderLineViews[currentIndex])
-                
-                
-                //label1.layer.zPosition = 1
-                
-                bringSubviewToFront(labelText)
+
+                superview?.addSubview(displayingUnderLineViews[currentIndex])
+
+                superview?.bringSubviewToFront(self)
+
             }
             
         }
@@ -313,27 +275,27 @@ class UnderLineView : UILabel{
         
         
         
-        let lines = labelText.getLinesArrayOfString()
+        let lines = self.getLinesArrayOfString()
         
         print(lines)
         
         for (index,line) in lines.enumerated(){
             
-            let lineSize = (line as NSString).size(withAttributes: [.font: labelText.font!])
+            let lineSize = (line as NSString).size(withAttributes: [.font: self.font!])
             
             var underLine_View : UIView!
             
             
             
-            switch labelText.textAlignment {
+            switch self.textAlignment {
             case .center:
-                underLine_View = UIView(frame: CGRect(x: (labelText.frame.midX - (lineSize.width/2)), y: ( ( labelText.frame.minY  + (labelText.font.lineHeight ) * CGFloat(index+1) ) - labelText.font.leading ), width: lineSize.width, height: (height != 0 ? height : (labelText.font.descender * CGFloat(1.5) ))))
+                underLine_View = UIView(frame: CGRect(x: (self.frame.midX - (lineSize.width/2)), y: ( ( self.frame.minY  + (self.font.lineHeight ) * CGFloat(index+1) ) - self.font.leading ), width: lineSize.width, height: (height != 0 ? height : (self.font.descender * CGFloat(1.5) ))))
                 
             case .right:
-                underLine_View = UIView(frame: CGRect(x: (labelText.frame.maxX - lineSize.width), y: ( ( labelText.frame.minY  + (labelText.font.lineHeight ) * CGFloat(index+1) ) - labelText.font.leading ), width: lineSize.width, height: (height != 0 ? height : (labelText.font.descender * CGFloat(1.5) ))))
+                underLine_View = UIView(frame: CGRect(x: (self.frame.maxX - lineSize.width), y: ( ( self.frame.minY  + (self.font.lineHeight ) * CGFloat(index+1) ) - self.font.leading ), width: lineSize.width, height: (height != 0 ? height : (self.font.descender * CGFloat(1.5) ))))
                 
             default:
-                underLine_View = UIView(frame: CGRect(x: labelText.frame.minX, y: ( ( labelText.frame.minY  + (labelText.font.lineHeight ) * CGFloat(index+1) ) - labelText.font.leading ), width: lineSize.width, height: (height != 0 ? height : (labelText.font.descender * CGFloat(1.5) ))))
+                underLine_View = UIView(frame: CGRect(x: self.frame.minX, y: ( ( self.frame.minY  + (self.font.lineHeight ) * CGFloat(index+1) ) - self.font.leading ), width: lineSize.width, height: (height != 0 ? height : (self.font.descender * CGFloat(1.5) ))))
             }
             
             underline_Views.append(underLine_View)
@@ -454,10 +416,7 @@ class UnderLineView : UILabel{
             else{
                 
                 self?.isRemoving = false
-                
-                //                self?.displayingUnderLineViews.remove(at: index)
-                //                self?.displayingUnderLineViews[index].removeFromSuperview()
-                
+
                 print("added underline number ",((self?.currentIndex  ?? 0 ) + 1))
                 print("Total underline Views " , (self?.underline_Views.count ?? 0)  )
                 
