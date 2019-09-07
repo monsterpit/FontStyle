@@ -17,7 +17,13 @@ extension UILabel{
      */
     func getLinesArrayOfString() -> [String] {
         
-        guard let text = text, let font = font else { return [] }
+        guard var text = text, let font = font else { return [] }
+        
+        
+        text = String(text[..<((text.range(of: "\n\n"))?.lowerBound ?? text.endIndex)])
+       
+        
+        
         let ctFont = CTFontCreateWithName(font.fontName as CFString, font.pointSize, nil)
         let attStr = NSMutableAttributedString(string: text)
         attStr.addAttribute(kCTFontAttributeName as NSAttributedString.Key, value: ctFont, range: NSRange(location: 0, length: attStr.length))
@@ -43,3 +49,5 @@ extension Collection where Indices.Iterator.Element == Index {
         return indices.contains(index) ? self[index] : nil
     }
 }
+
+

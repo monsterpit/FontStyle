@@ -95,6 +95,24 @@ class UnderLineView : UILabel{
     }
     
     
+    func setupTextForLabel(withText text : NSAttributedString? = NSAttributedString(string: ""),withFont font : UIFont = UIFont.systemFont(ofSize: 15),withColor color : UIColor = .black,withAlignment alignment : NSTextAlignment? = .natural,withFontSize fontSize : CGFloat = 16){
+        
+        if fontSize == 16{
+            labelText.font = font
+            
+        }
+        else{
+            labelText.font = UIFont.init(name: "D-DIN-Bold", size: fontSize)  ?? UIFont.systemFont(ofSize: fontSize)
+        }
+        
+        labelText.attributedText = text
+        labelText.textColor = color
+        labelText.textAlignment = alignment!
+        
+        
+    }
+    
+    
     
     
     
